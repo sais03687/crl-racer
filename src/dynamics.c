@@ -4,10 +4,10 @@
 
 void car_reset(CarState *car, float x, float y, float heading, float speed)
 {
-    car->x       = x;
-    car->y       = y;
+    car->x = x;
+    car->y = y;
     car->heading = heading;
-    car->speed   = speed;
+    car->speed = speed;
 }
 
 void car_step(CarState *car, const Config *cfg,
@@ -58,12 +58,12 @@ void car_footprint(const CarState *car, const Config *cfg,
      * symmetrically inside it: the body's centre is half a wheelbase ahead of
      * the rear axle, which leaves equal overhangs front and rear. */
     float to_front = 0.5f * cfg->wheelbase_m + 0.5f * cfg->car_length_m;
-    float to_rear  = 0.5f * cfg->car_length_m - 0.5f * cfg->wheelbase_m;
-    float half_w   = 0.5f * cfg->car_width_m;
+    float to_rear = 0.5f * cfg->car_length_m - 0.5f * cfg->wheelbase_m;
+    float half_w = 0.5f * cfg->car_width_m;
 
     /* Corners in the car's own frame: x forward, y to the left. */
-    const float bx[4] = {  to_front,  to_front, -to_rear, -to_rear };
-    const float by[4] = {   half_w,   -half_w,  -half_w,   half_w  };
+    const float bx[4] = {to_front, to_front, -to_rear, -to_rear};
+    const float by[4] = {half_w, -half_w, -half_w, half_w};
 
     float c = cosf(car->heading);
     float s = sinf(car->heading);
