@@ -66,7 +66,7 @@ typedef struct Config {
     float max_speed_mps;          /* target speed is clamped to [0, this] */
     float min_speed_mps;          /* floor the driver is allowed to request */
     float max_accel_mps2;         /* magnitude limit on |dv/dt|, both directions */
-    float max_lateral_accel_mps2
+    float max_lateral_accel_mps2;
 
     /* ---------------- Occupancy interpretation ----------------
      * A map is a greyscale image. Deciding which grey counts as "wall" is a
