@@ -35,7 +35,9 @@ void car_step(CarState *car, const Config *cfg,
      * acceleration, because position responds in the same step as the speed
      * change that caused it rather than one step late. */
     float v = car->speed;
-
+    float delta_grip = atanf(cfg->max_lateral_accel_mps2 * cfg->wheelbase_m / (v * v)); //solving for delta_grip with the equation for lateral acceleration
+    float delta_bound = fminf(cfg->max_steer_rad, delta_grip); //find the smaller of the 2 limits and use that as the bound
+    float delta_eff = clampf(delta, -delta_bound, delta_bound); //using the delta_bound minimal limit from the last line in order to actually clamp it.
     car->x += v * cosf(car->heading) * dt;
     car->y += v * sinf(car->heading) * dt;
 
