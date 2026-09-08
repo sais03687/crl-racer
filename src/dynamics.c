@@ -36,8 +36,8 @@ void car_step(CarState *car, const Config *cfg,
      * change that caused it rather than one step late. */
     float v = car->speed;
 
-    car->x       += v * cosf(car->heading) * dt;
-    car->y       += v * sinf(car->heading) * dt;
+    car->x += v * cosf(car->heading) * dt;
+    car->y += v * sinf(car->heading) * dt;
 
     /* TODO(grip): the tyres have not been told they have a limit.
      *
