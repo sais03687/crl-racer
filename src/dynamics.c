@@ -35,28 +35,14 @@ void car_step(CarState *car, const Config *cfg,
      * acceleration, because position responds in the same step as the speed
      * change that caused it rather than one step late. */
     float v = car->speed;
+    car->x += v * cosf(car->heading) * dt;
+    car->y += v * sinf(car->heading) * dt;
+    
     float delta_grip = atanf(cfg->max_lateral_accel_mps2 * cfg->wheelbase_m / (v * v)); //solving for delta_grip with the equation for lateral acceleration
     float delta_bound = fminf(cfg->max_steer_rad, delta_grip); //find the smaller of the 2 limits and use that as the bound
     float delta_eff = clampf(delta, -delta_bound, delta_bound); //using the delta_bound minimal limit from the last line in order to actually clamp it.
-    car->x += v * cosf(car->heading) * dt;
-    car->y += v * sinf(car->heading) * dt;
-
-    /* TODO(grip): the tyres have not been told they have a limit.
-     *
-     * Cornering demand is  a_lat = v^2 * tan(delta) / L, so the tightest the
-     * tyres will hold is  delta_grip = atan(a_max * L / v^2).  Bound `delta`
-     * by min(max_steer_rad, delta_grip) and feed the BOUNDED angle into the
-     * heading update below -- not `delta`.
-     *
-     * Note the v^2 in the denominator: the bound shrinks with the square of
-     * speed, which is why a corner has a right speed at all.
-     *
-     * v = 0 gives +inf, and atanf(+inf) = pi/2, so fminf picks the mechanical
-     * limit. That is correct; do not add a guard for it.
-     *
-     * Until this lands, the car corners at any speed and the benchmark below
-     * is uninformative -- see the table in README.md. */
-    car->heading += (v / cfg->wheelbase_m) * tanf(delta) * dt;
+    
+    car->heading += (v / cfg->wheelbase_m) * tanf(delta_eff) * dt;
 
     /* Keep the heading in (-pi, pi]. Not needed by sin/cos, which are happy
      * with any magnitude, but it keeps the number readable in the renderer and
