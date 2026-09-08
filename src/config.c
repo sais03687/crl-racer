@@ -30,9 +30,10 @@ Config config_default(void)
     c.car_length_m   = 0.58f;
     c.car_width_m    = 0.31f;
     c.max_steer_rad  = 0.4189f;   /* 24 degrees */
-    c.max_speed_mps  = 6.0f;
+    c.max_speed_mps  = 12.0f;
     c.min_speed_mps  = 1.5f;
     c.max_accel_mps2 = 6.0f;
+    c.max_lateral_accel_mps2 = 8.0f;
 
     /* map_server's defaults; the YAML overrides these per map. */
     c.default_occupied_thresh   = 0.65f;
