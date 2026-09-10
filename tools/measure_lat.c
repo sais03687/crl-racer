@@ -48,7 +48,7 @@ int main(int argc, char **argv)
         float v = obs.speed_mps;
         float dg = atanf(cfg.max_lateral_accel_mps2 * cfg.wheelbase_m / (v * v)); /* dg: the tightest the tyres will hold at this speed */
         float db = fminf(cfg.max_steer_rad, dg); /* db: the real bound is whichever limit is tighter, tyres or linkage */
-        float de = clampf(a.steering_rad, -db, db) /* de: what the car actually steers, after car_step clamps the request */
+        float de = clampf(a.steering_rad, -db, db); /* de: what the car actually steers, after car_step clamps the request */
         float al = fabsf(v * v * tanf(de) / cfg.wheelbase_m); /* al: lateral acceleration achieved -- from de, not from the request */
         lat[n++] = al; sum += al; if (al > peak) peak = al;
 
