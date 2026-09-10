@@ -22,7 +22,7 @@ Config config_default(void)
      * advances 0.03 m per physics step, comfortably under the ~0.06 m cell
      * size of the published maps, so the swept path cannot jump over a wall
      * that is only one pixel thick. */
-    c.physics_dt_s = 0.005f;
+    c.physics_dt_s = 0.0025f;
     c.control_hz   = 50.0f;
 
     /* Published F1TENTH chassis geometry. */
