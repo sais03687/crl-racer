@@ -14,6 +14,7 @@
 #include "config.h"
 #include "env.h"
 #include "ftg.h"
+#include "mathf.h"
 
 static int cmpf(const void *a, const void *b){
     float x = *(const float*)a, y = *(const float*)b;
@@ -45,7 +46,10 @@ int main(int argc, char **argv)
         /* Demand is evaluated at the speed the car is actually doing when the
          * command is applied, which is the speed in this observation. */
         float v = obs.speed_mps;
-        float al = fabsf(v * v * tanf(a.steering_rad) / cfg.wheelbase_m);
+        float dg = atanf(cfg.max_lateral_accel_mps2 * cfg.wheelbase_m / (v * v)); /* dg: the tightest the tyres will hold at this speed */
+        float db = fminf(cfg.max_steer_rad, dg); /* db: the real bound is whichever limit is tighter, tyres or linkage */
+        float de = clampf(a.steering_rad, -db, db) /* de: what the car actually steers, after car_step clamps the request */
+        float al = fabsf(v * v * tanf(de) / cfg.wheelbase_m); /* al: lateral acceleration achieved -- from de, not from the request */
         lat[n++] = al; sum += al; if (al > peak) peak = al;
 
         StepResult r = env_step(&env, a);
